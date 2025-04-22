@@ -1,0 +1,32 @@
+- name: Install MySQL Server and Python bindings
+  ansible.builtin.apt:
+    name:
+      - mysql-server         # MySQL server package
+      - python3-pymysql      # Required for Ansible MySQL modules
+    state: present
+    update_cache: yes
+    force: yes        
+  become: true               # Run as root
+
+
+- name: Ensure MySQL/MariaDB is running and enabled on boot
+  ansible.builtin.service:
+    name: mysql
+    state: started    # Starts the service
+    enabled: yes      # Enables at boot
+  become: true        # Requires root
+
+- name: Debug mysql_root_password
+  debug:
+    msg: "{{ mysql_root_password }}"
+
+- name: Create MySQL root user
+  community.mysql.mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    priv: "*.*:ALL,GRANT"
+    state: present
+    update_password: always
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+

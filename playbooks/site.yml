@@ -1,0 +1,7 @@
+---
+- name: LAMP Stack Setup
+  hosts: local        
+  become: true
+
+  roles:
+    - mysql         # This assumes you have a 'mysql' role inside the 'roles/' folder

@@ -1,0 +1,2 @@
+# roles/mysql/defaults/main.yml
+mysql_root_password: "1234"
