@@ -5,4 +5,5 @@
 
   roles:
     # - mysql
-    - apache         # This assumes you have a 'mysql' role inside the 'roles/' folder
+    # - apache 
+      - ../roles/php        
