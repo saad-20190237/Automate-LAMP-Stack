@@ -4,7 +4,7 @@
       - mysql-server         # MySQL server package
       - python3-pymysql      # Required for Ansible MySQL modules
     state: present
-    update_cache: yes
+    # update_cache: yes
     force: yes        
   become: true               # Run as root
 
@@ -20,6 +20,20 @@
   debug:
     msg: "{{ mysql_root_password }}"
 
+- name: Change MySQL root user authentication to mysql_native_password
+  community.mysql.mysql_user:
+    name: root
+    host: localhost
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    priv: "*.*:ALL,GRANT"
+    update_password: on_create
+    plugin: mysql_native_password
+  become: true
+
+
+
 # - name: Create MySQL root user
 #   community.mysql.mysql_user:
 #     name: root
@@ -31,12 +45,15 @@
 #     login_password: "{{ mysql_root_password }}"
 
 
-- name: Create MySQL root user
-  mysql_user:
-    name: root
-    password: "{{ mysql_root_password }}"
-    host: localhost
-    priv: "*.*:ALL,GRANT"
-    login_unix_socket: /var/run/mysqld/mysqld.sock
-  become: true
+# - name: Create MySQL root user
+#   mysql_user:
+#     name: root
+#     password: "{{ mysql_root_password }}"
+#     host: localhost
+#     priv: "*.*:ALL,GRANT"
+#     login_unix_socket: /var/run/mysqld/mysqld.sock
+#   become: true
+
+
+
 

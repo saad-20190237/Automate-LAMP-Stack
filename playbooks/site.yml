@@ -3,7 +3,11 @@
   hosts: local        
   become: true
 
+  collections:
+    - community.mysql
+
+
   roles:
-    # - mysql
+    - ../roles/mysql
     # - apache 
-      - ../roles/php        
+    # - ../roles/php        
