@@ -37,18 +37,21 @@ This project uses **Ansible** to automate the setup of a **LAMP stack** (Linux, 
 
 ### 🛠️ Troubleshooting: Role Not Found Error
 
-If you encounter an error like: 
-ERROR! the role 'mysql' was not found in ...
+If you encounter an error like:  
+`ERROR! the role 'mysql' was not found in ...`
+
 Set the Ansible roles path manually:
 
 ```bash
-export ANSIBLE_ROLES_PATH=../roles
-Then re-run the playbook:
+   export ANSIBLE_ROLES_PATH=../roles
+```
 
+Then re-run the playbook
 
 ⚠️ Notes
-
 ✅ MySQL login fix: Resolved root login issues by using the mysql_native_password plugin and specifying the Unix socket.
 
 🔁 Handlers: Apache will automatically restart when its configuration or deployed PHP files are changed.
+
+
 
