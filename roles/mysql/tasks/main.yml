@@ -1,59 +1,40 @@
+---
 - name: Install MySQL Server and Python bindings
   ansible.builtin.apt:
     name:
-      - mysql-server         # MySQL server package
-      - python3-pymysql      # Required for Ansible MySQL modules
+      - mysql-server
+      - python3-pymysql
     state: present
-    # update_cache: yes
-    force: yes        
-  become: true               # Run as root
+  become: true
+  tags: mysql
 
+# Minimal working wait for MySQL (no changes to your structure)
+- name: Wait briefly for MySQL initialization
+  ansible.builtin.pause:
+    seconds: 15
+  tags: mysql
 
-- name: Ensure MySQL/MariaDB is running and enabled on boot
+- name: Ensure MySQL is running and enabled
   ansible.builtin.service:
     name: mysql
-    state: started    # Starts the service
-    enabled: yes      # Enables at boot
-  become: true        # Requires root
+    state: started
+    enabled: yes
+  become: true
+  tags: mysql
 
 - name: Debug mysql_root_password
-  debug:
+  ansible.builtin.debug:
     msg: "{{ mysql_root_password }}"
+  tags: mysql
 
-- name: Change MySQL root user authentication to mysql_native_password
+# In your existing password task, replace ONLY these lines:
+- name: Change MySQL root authentication
   community.mysql.mysql_user:
     name: root
     host: localhost
     password: "{{ mysql_root_password }}"
-    login_user: root
-    login_unix_socket: /var/run/mysqld/mysqld.sock
-    priv: "*.*:ALL,GRANT"
-    update_password: on_create
     plugin: mysql_native_password
+    # Replace check_implicit_admin with this:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
   become: true
-
-
-
-# - name: Create MySQL root user
-#   community.mysql.mysql_user:
-#     name: root
-#     password: "{{ mysql_root_password }}"
-#     priv: "*.*:ALL,GRANT"
-#     state: present
-#     update_password: always
-#     login_user: root
-#     login_password: "{{ mysql_root_password }}"
-
-
-# - name: Create MySQL root user
-#   mysql_user:
-#     name: root
-#     password: "{{ mysql_root_password }}"
-#     host: localhost
-#     priv: "*.*:ALL,GRANT"
-#     login_unix_socket: /var/run/mysqld/mysqld.sock
-#   become: true
-
-
-
-
+  tags: mysql
