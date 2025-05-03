@@ -49,6 +49,7 @@ Set the Ansible roles path manually:
 Then re-run the playbook
 
 ⚠️ Notes
+
 ✅ MySQL login fix: Resolved root login issues by using the mysql_native_password plugin and specifying the Unix socket.
 
 🔁 Handlers: Apache will automatically restart when its configuration or deployed PHP files are changed.
