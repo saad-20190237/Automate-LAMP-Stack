@@ -46,11 +46,6 @@ export ANSIBLE_ROLES_PATH=../roles
 Then re-run the playbook:
 
 
-
-
-
-
-
 ⚠️ Notes
 
 ✅ MySQL login fix: Resolved root login issues by using the mysql_native_password plugin and specifying the Unix socket.
